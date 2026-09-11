@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "io.github.terrifiedbug.omapangolin",
+  "name": "OmaPangolin",
+  "version": "0.1.0",
+  "author": "TerrifiedBug",
+  "license": "MIT",
+  "description": "Pangolin VPN client in the bar: connect, disconnect, log in with SSO, and tune DNS through the official pangolin CLI.",
+  "homepage": "https://github.com/TerrifiedBug/omapangolin",
+  "kinds": ["bar-widget", "service"],
+  "entryPoints": { "barWidget": "Panel.qml", "service": "Service.qml" },
+  "barWidget": {
+    "displayName": "OmaPangolin",
+    "description": "Pangolin tunnel status and controls.",
+    "category": "Network",
+    "allowMultiple": false,
+    "defaultSection": "right",
+    "defaults": { "host": "" },
+    "schema": [
+      { "key": "host", "type": "string", "label": "Pangolin server", "description": "Passed to `pangolin login` for the first login so the hosting prompt is skipped. Once an account exists its host is used instead.", "defaultValue": "" }
+    ]
+  }
+}

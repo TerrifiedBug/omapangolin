@@ -67,7 +67,13 @@ Panel {
     id: button
     anchors.fill: parent
     bar: root.bar
-    text: Model.stateGlyph(root.state)
+    iconComponent: Component {
+      PangolinIcon {
+        anchors.centerIn: parent
+        iconSize: Style.space(12)
+        busy: root.busy
+      }
+    }
     active: root.state === "error"
     dimmed: root.state === "disconnected" || root.state === "loggedOut"
     tooltipText: "Pangolin · " + Model.stateLabel(root.state)
@@ -138,13 +144,9 @@ Panel {
           fontFamily: root.contentFontFamily
           iconOpacity: root.state === "disconnected" || root.state === "loggedOut" ? 0.5 : 1.0
           iconComponent: Component {
-            OpticalGlyph {
-              implicitWidth: Style.font.display
-              implicitHeight: Style.font.display
-              text: Model.stateGlyph(root.state)
-              fontFamily: root.contentFontFamily
-              fontSize: Style.font.display
-              color: root.state === "error" ? (root.bar ? root.bar.urgent : Color.urgent) : root.contentForeground
+            PangolinIcon {
+              iconSize: Style.font.display
+              busy: root.busy
             }
           }
         }

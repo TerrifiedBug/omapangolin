@@ -130,14 +130,6 @@ function stateLabel(state) {
   return "Disconnected"
 }
 
-function stateGlyph(state) {
-  if (state === "connected") return "󰕥" // nf-md-shield_check
-  if (state === "connecting" || state === "starting" || state === "disconnecting") return "󱆢" // nf-md-shield_sync
-  if (state === "error") return "󰻌" // nf-md-shield_alert
-  if (state === "loggedOut") return "󰒙" // nf-md-shield_outline
-  return "󰦞" // nf-md-shield_off
-}
-
 function safeHost(value) {
   var host = String(value === undefined || value === null ? "" : value).trim()
   return HOST_PATTERN.test(host) ? host : ""
@@ -171,7 +163,6 @@ if (typeof module !== "undefined") {
     deriveState: deriveState,
     pendingSatisfied: pendingSatisfied,
     stateLabel: stateLabel,
-    stateGlyph: stateGlyph,
     safeHost: safeHost,
     loginArgv: loginArgv,
     normalizeList: normalizeList,

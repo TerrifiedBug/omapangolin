@@ -23,12 +23,8 @@ Panel {
   readonly property color contentForeground: bar ? bar.foreground : Color.foreground
   readonly property string contentFontFamily: bar ? bar.fontFamily : Style.font.family
   readonly property color dimForeground: Qt.darker(contentForeground, 1.6)
-  readonly property string accountMeta: service && service.loggedIn
-    ? service.accountEmail + " @ " + service.accountHost
-    : "Log in to connect"
-  readonly property string orgId: service ? (service.accountOrg || status.orgId) : status.orgId
-  readonly property string heroDetail: (orgId !== "" ? "Org " + orgId : "")
-    + (status.connected && status.tunnelIp !== "" ? (orgId !== "" ? " · " : "") + status.tunnelIp : "")
+  readonly property string accountMeta: service && service.loggedIn ? service.accountEmail : "Log in to connect"
+  readonly property string heroDetail: ""
 
   function quickToggle() {
     if (!service || busy) return
@@ -106,10 +102,31 @@ Panel {
         width: parent.width
         spacing: Style.space(10)
 
-        PanelSectionHeader {
-          text: "PANGOLIN"
-          foreground: root.contentForeground
-          fontFamily: root.contentFontFamily
+        Item {
+          width: parent.width
+          implicitHeight: Math.max(sectionHeader.implicitHeight, tunnelLabel.implicitHeight)
+
+          PanelSectionHeader {
+            id: sectionHeader
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+            text: "PANGOLIN"
+            foreground: root.contentForeground
+            fontFamily: root.contentFontFamily
+          }
+
+          Text {
+            id: tunnelLabel
+            textFormat: Text.PlainText
+            visible: root.status.connected && root.status.tunnelIp !== ""
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            text: root.status.tunnelIp
+            color: root.dimForeground
+            font.family: root.contentFontFamily
+            font.pixelSize: Style.font.caption
+            font.bold: true
+          }
         }
 
         PanelHero {
@@ -176,7 +193,8 @@ Panel {
 
         Text {
           visible: root.state === "connecting"
-          text: "Finish sudo and the connection in the floating terminal."
+          width: parent.width
+          text: "Finish sudo/FIDO in the floating terminal."
           color: root.dimForeground
           font.family: root.contentFontFamily
           font.pixelSize: Style.font.caption
@@ -185,7 +203,8 @@ Panel {
 
         Text {
           visible: root.state === "loggedOut" && root.busy
-          text: "Complete the SSO login in the floating terminal; the code is shown there."
+          width: parent.width
+          text: "Finish SSO in the floating terminal."
           color: root.dimForeground
           font.family: root.contentFontFamily
           font.pixelSize: Style.font.caption

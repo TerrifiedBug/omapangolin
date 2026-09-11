@@ -14,7 +14,7 @@ Panel {
   manageIpc: false
 
   readonly property var service: bar && bar.shell && typeof bar.shell.serviceFor === "function" ? bar.shell.serviceFor(moduleName) : null
-  state: service ? service.state : "disconnected"
+  readonly property string connectionState: service ? service.connectionState : "disconnected"
   readonly property bool busy: service ? service.busy : false
   readonly property var status: service ? service.status : Model.parseStatus("")
   readonly property var prefs: service ? service.prefs : Model.parsePrefs("")
@@ -74,9 +74,9 @@ Panel {
         busy: root.busy
       }
     }
-    active: root.state === "error"
-    dimmed: root.state === "disconnected" || root.state === "loggedOut"
-    tooltipText: "Pangolin · " + Model.stateLabel(root.state)
+    active: root.connectionState === "error"
+    dimmed: root.connectionState === "disconnected" || root.connectionState === "loggedOut"
+    tooltipText: "Pangolin · " + Model.stateLabel(root.connectionState)
       + (root.service && root.service.loggedIn ? " · right-click to connect/disconnect" : "")
 
     onPressed: function(b) {
@@ -137,12 +137,12 @@ Panel {
 
         PanelHero {
           width: parent.width
-          title: Model.stateLabel(root.state)
+          title: Model.stateLabel(root.connectionState)
           meta: root.accountMeta
           detail: root.heroDetail
           foreground: root.contentForeground
           fontFamily: root.contentFontFamily
-          iconOpacity: root.state === "disconnected" || root.state === "loggedOut" ? 0.5 : 1.0
+          iconOpacity: root.connectionState === "disconnected" || root.connectionState === "loggedOut" ? 0.5 : 1.0
           iconComponent: Component {
             PangolinIcon {
               iconSize: Style.font.display
@@ -155,8 +155,8 @@ Panel {
           spacing: Style.space(6)
 
           Button {
-            text: root.busy ? Model.stateLabel(root.state)
-              : root.state === "loggedOut" ? "Log in"
+            text: root.busy ? Model.stateLabel(root.connectionState)
+              : root.connectionState === "loggedOut" ? "Log in"
               : root.status.running ? "Disconnect"
               : "Connect"
             bordered: true
@@ -165,7 +165,7 @@ Panel {
             fontFamily: root.contentFontFamily
 
             onClicked: {
-              if (root.state === "loggedOut") root.service.login(root.hostHint)
+              if (root.connectionState === "loggedOut") root.service.login(root.hostHint)
               else if (root.status.running) root.service.disconnect()
               else root.service.connect()
             }
@@ -194,7 +194,7 @@ Panel {
         }
 
         Text {
-          visible: root.state === "connecting"
+          visible: root.connectionState === "connecting"
           width: parent.width
           text: "Finish sudo/FIDO in the floating terminal."
           color: root.dimForeground
@@ -204,7 +204,7 @@ Panel {
         }
 
         Text {
-          visible: root.state === "loggedOut" && root.busy
+          visible: root.connectionState === "loggedOut" && root.busy
           width: parent.width
           text: "Finish SSO in the floating terminal."
           color: root.dimForeground

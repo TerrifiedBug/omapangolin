@@ -33,7 +33,7 @@ Item {
   property string actionError: ""
   property var configQueue: []
 
-  state: Model.deriveState(loggedIn, status, pending)
+  readonly property string connectionState: Model.deriveState(loggedIn, status, pending)
   readonly property bool busy: pending !== ""
 
   function refresh() {
@@ -217,7 +217,7 @@ Item {
 
     function status(): string {
       return JSON.stringify({
-        state: root.state,
+        state: root.connectionState,
         loggedIn: root.loggedIn,
         connected: root.status.connected,
         account: root.accountEmail,

@@ -90,6 +90,7 @@ Item {
   }
 
   function setPref(key, value) {
+    actionError = ""
     configQueue = configQueue.concat([[key, value]])
     pumpConfig()
   }
@@ -189,7 +190,7 @@ Item {
     }
 
     onExited: function(code) {
-      if (code !== 0) root.actionError = logoutErr.text.trim() || "pangolin logout failed"
+      root.actionError = Model.processError(code, logoutErr.text, "pangolin logout failed")
       root.refresh()
     }
   }
@@ -205,7 +206,7 @@ Item {
     }
 
     onExited: function(code) {
-      if (code !== 0) root.actionError = configErr.text.trim() || "pangolin config set failed"
+      root.actionError = Model.processError(code, configErr.text, "pangolin config set failed")
       root.refreshPrefs()
       root.pumpConfig()
     }

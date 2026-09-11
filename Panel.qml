@@ -19,7 +19,7 @@ Panel {
   readonly property var status: service ? service.status : Model.parseStatus("")
   readonly property var prefs: service ? service.prefs : Model.parsePrefs("")
   readonly property string hostHint: String(setting("host", ""))
-  readonly property string problem: !service ? "Service not loaded — restart the shell" : (service.actionError || "")
+  readonly property string problem: !service ? "Service not loaded. Restart the shell." : (service.actionError || "")
   readonly property color contentForeground: bar ? bar.foreground : Color.foreground
   readonly property string contentFontFamily: bar ? bar.fontFamily : Style.font.family
   readonly property color dimForeground: Qt.darker(contentForeground, 1.6)
@@ -267,7 +267,7 @@ Panel {
           visible: root.status.error !== "" || root.problem !== ""
           width: parent.width
           text: (root.status.error !== "" ? root.status.error : root.problem)
-            + (Model.sessionExpired(root.status.error) ? " — log in again" : "")
+            + (Model.sessionExpired(root.status.error) ? ". Log in again." : "")
           color: root.bar ? root.bar.urgent : Color.urgent
           font.family: root.contentFontFamily
           font.pixelSize: Style.font.caption

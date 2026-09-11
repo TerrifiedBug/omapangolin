@@ -137,6 +137,13 @@ test("normalizeList mirrors comma-list storage", () => {
   assert.equal(Model.normalizeList(" 10.0.0.53, ,1.1.1.1 "), "10.0.0.53,1.1.1.1")
 })
 
+test("processError clears a failed action after a successful retry", () => {
+  let error = Model.processError(1, " first write failed ", "fallback")
+  assert.equal(error, "first write failed")
+  error = Model.processError(0, "", "fallback")
+  assert.equal(error, "")
+})
+
 test("sessionExpired recognizes unauthorized errors", () => {
   assert.equal(Model.sessionExpired("Unauthorized request"), true)
   assert.equal(Model.sessionExpired("connection refused"), false)

@@ -146,6 +146,11 @@ function normalizeList(text) {
   return String(text || "").split(",").map(function(value) { return value.trim() }).filter(function(value) { return value !== "" }).join(",")
 }
 
+function processError(exitCode, stderr, fallback) {
+  if (exitCode === 0) return ""
+  return String(stderr || "").trim() || fallback
+}
+
 function sessionExpired(errorText) {
   return /unauthorized/i.test(String(errorText || ""))
 }
@@ -166,6 +171,7 @@ if (typeof module !== "undefined") {
     safeHost: safeHost,
     loginArgv: loginArgv,
     normalizeList: normalizeList,
+    processError: processError,
     sessionExpired: sessionExpired
   }
 }

@@ -42,6 +42,12 @@ omarchy-shell omapangolin login
 omarchy-shell omapangolin logout
 ```
 
+## Theme compatibility
+
+Theme colors use a namespaced `qs.Commons.Color` import to avoid Qt 6.12's
+`Color` name collision. This keeps the existing palette roles and fallbacks
+without changing the plugin's Omarchy requirements.
+
 ## Privacy
 
 Pangolin keeps account secrets in `~/.config/pangolin/accounts.json`. The plugin reads that file through `jq`, which returns the host, email, name, organization, and whether a session exists. The session token and OLM secret don't enter QML.

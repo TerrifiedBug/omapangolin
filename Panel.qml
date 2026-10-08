@@ -2,6 +2,7 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 import "Model.js" as Model
 
@@ -20,7 +21,7 @@ Panel {
   readonly property var prefs: service ? service.prefs : Model.parsePrefs("")
   readonly property string hostHint: String(setting("host", ""))
   readonly property string problem: !service ? "Service not loaded. Restart the shell." : (service.actionError || "")
-  readonly property color contentForeground: bar ? bar.foreground : Color.foreground
+  readonly property color contentForeground: bar ? bar.foreground : Commons.Color.foreground
   readonly property string contentFontFamily: bar ? bar.fontFamily : Style.font.family
   readonly property color dimForeground: Qt.darker(contentForeground, 1.6)
   readonly property string accountMeta: service && service.loggedIn ? service.accountEmail : "Log in to connect"
@@ -232,7 +233,7 @@ Panel {
                 radius: width / 2
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
-                color: parent.modelData.connected ? Color.accent : root.dimForeground
+                color: parent.modelData.connected ? Commons.Color.accent : root.dimForeground
               }
 
               Text {
@@ -268,7 +269,7 @@ Panel {
           width: parent.width
           text: (root.status.error !== "" ? root.status.error : root.problem)
             + (Model.sessionExpired(root.status.error) ? ". Log in again." : "")
-          color: root.bar ? root.bar.urgent : Color.urgent
+          color: root.bar ? root.bar.urgent : Commons.Color.urgent
           font.family: root.contentFontFamily
           font.pixelSize: Style.font.caption
           wrapMode: Text.WordWrap
